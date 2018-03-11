@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[]{
-                DrawOrder.BAR, DrawOrder.BUBBLE, DrawOrder.CANDLE, DrawOrder.LINE, DrawOrder.SCATTER
+                DrawOrder.BAR, DrawOrder.LINE
         });
 
         Legend l = mChart.getLegend();
@@ -137,11 +137,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         for (int index = 0; index < itemcount; index++)
-            entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
+            entries.add(new Entry(index , getRandom(15, 5)));
 
         LineDataSet set = new LineDataSet(entries, "Line DataSet");
         set.setColor(Color.rgb(240, 238, 70));
-        set.setLineWidth(2.5f);
         set.setCircleColor(Color.rgb(240, 238, 70));
         set.setCircleRadius(5f);
         set.setFillColor(Color.rgb(240, 238, 70));
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     private BarData generateBarData() {
         ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
         for (int index = 0; index < mMonths.length; index++)
-            entries1.add(new BarEntryDto(index, getRandom(15, 5),index+2));
+            entries1.add(new BarEntryDto(index, getRandom(15, 5), index + 2));
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
 //        set1.setColors(ColorTemplate.COLORFUL_COLORS);

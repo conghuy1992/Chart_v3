@@ -6,26 +6,30 @@ package com.example.android.chart_v3;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.view.View;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
+import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
+import com.github.mikephil.charting.renderer.CombinedChartRenderer;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 /**
  * Created by David on 29/12/2016.
  */
 
-public class ImageBarChartRenderer extends BarChartRenderer {
+public class ImageBarChartRenderer extends CombinedChartRenderer {
 
-    private final Bitmap barImage;
+    private  Bitmap barImage=null;
 
-    public ImageBarChartRenderer(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler, Bitmap barImage) {
+    public ImageBarChartRenderer(CombinedChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler,  Bitmap barImage) {
         super(chart, animator, viewPortHandler);
-        this.barImage = barImage;
+        this.barImage=barImage;
     }
 
     @Override
@@ -34,47 +38,56 @@ public class ImageBarChartRenderer extends BarChartRenderer {
     }
 
     @Override
-    protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
-        super.drawDataSet(c, dataSet, index);
-        drawBarImages(c, dataSet, index);
+    public void drawHighlighted(Canvas c, Highlight[] indices) {
+        super.drawHighlighted(c, indices);
     }
 
-    protected void drawBarImages(Canvas c, IBarDataSet dataSet, int index) {
-        BarBuffer buffer = mBarBuffers[index];
-
-        float left; //avoid allocation inside loop
-        float right;
-        float top;
-        float bottom;
-
-        final Bitmap scaledBarImage = scaleBarImage(buffer);
-
-        int starWidth = scaledBarImage.getWidth();
-        int starOffset = starWidth / 2;
-
-        for (int j = 0; j < buffer.buffer.length * mAnimator.getPhaseX(); j += 4) {
-            left = buffer.buffer[j];
-            right = buffer.buffer[j + 2];
-            top = buffer.buffer[j + 1];
-            bottom = buffer.buffer[j + 3];
-
-            float x = (left + right) / 2f;
-
-            if (!mViewPortHandler.isInBoundsRight(x))
-                break;
-
-            if (!mViewPortHandler.isInBoundsY(top)
-                    || !mViewPortHandler.isInBoundsLeft(x))
-                continue;
-
-            BarEntry entry = dataSet.getEntryForIndex(j / 4);
-            float val = ((BarEntryDto) entry).star;
-
-            if (val > 5) {
-                drawImage(c, scaledBarImage, x - starOffset, top);
-            }
-        }
-    }
+    //    @Override
+//    protected void drawDataSet(Canvas c, IBarDataSet dataSet, int index) {
+//        super.drawDataSet(c, dataSet, index);
+//        drawBarImages(c, dataSet, index);
+//    }
+//
+//    protected void drawBarImages(Canvas c, IBarDataSet dataSet, int index) {
+//        BarBuffer buffer = mBarBuffers[index];
+//
+//        float left; //avoid allocation inside loop
+//        float right;
+//        float top;
+//        float bottom;
+//
+//        final Bitmap scaledBarImage = scaleBarImage(buffer);
+//
+//        int starWidth = scaledBarImage.getWidth();
+//        int starOffset = starWidth / 2;
+//
+//        for (int j = 0; j < buffer.buffer.length * mAnimator.getPhaseX(); j += 4) {
+//            left = buffer.buffer[j];
+//            right = buffer.buffer[j + 2];
+//            top = buffer.buffer[j + 1];
+//            bottom = buffer.buffer[j + 3];
+//
+//            float x = (left + right) / 2f;
+//
+//            if (!mViewPortHandler.isInBoundsRight(x))
+//                break;
+//
+//            if (!mViewPortHandler.isInBoundsY(top)
+//                    || !mViewPortHandler.isInBoundsLeft(x))
+//                continue;
+//
+//            BarEntry entry = dataSet.getEntryForIndex(j / 4);
+//            float val = entry.getY();
+//
+//            if (entry instanceof BarEntryDto) {
+//                val = ((BarEntryDto) entry).star;
+//            }
+//
+//            if (val > 5) {
+//                drawImage(c, scaledBarImage, x - starOffset, top);
+//            }
+//        }
+//    }
 
     private Bitmap scaleBarImage(BarBuffer buffer) {
         float firstLeft = buffer.buffer[0];
@@ -88,4 +101,5 @@ public class ImageBarChartRenderer extends BarChartRenderer {
             c.drawBitmap(image, x, y, null);
         }
     }
+
 }
