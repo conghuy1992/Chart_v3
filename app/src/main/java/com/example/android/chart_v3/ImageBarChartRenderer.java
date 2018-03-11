@@ -68,9 +68,9 @@ public class ImageBarChartRenderer extends BarChartRenderer {
                 continue;
 
             BarEntry entry = dataSet.getEntryForIndex(j / 4);
-            float val = entry.getY();
+            float val = ((BarEntryDto) entry).star;
 
-            if (val > 10) {
+            if (val > 5) {
                 drawImage(c, scaledBarImage, x - starOffset, top);
             }
         }

@@ -61,12 +61,19 @@ public class MainActivity extends AppCompatActivity {
         mChart = (CombinedChart) findViewById(R.id.chart1);
 
 
-
         mChart.getDescription().setEnabled(false);
+        mChart.setHighlightFullBarEnabled(false);
+
         mChart.setBackgroundColor(Color.WHITE);
         mChart.setDrawGridBackground(false);
         mChart.setDrawBarShadow(false);
-        mChart.setHighlightFullBarEnabled(false);
+//        combinedChart.setDrawValueAboveBar(false);
+        mChart.getXAxis().setDrawGridLines(false);
+
+//        combinedChart.getXAxis().setEnabled(false);
+//        combinedChart.getAxisLeft().setDrawAxisLine(false);
+        mChart.getAxisRight().setDrawAxisLine(false);
+        mChart.getAxisRight().setDrawLabels(false);
 
         // draw bars behind lines
         mChart.setDrawOrder(new DrawOrder[]{
@@ -103,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         data.setData(generateLineData());
         data.setData(generateBarData());
-        data.setData(generateBubbleData());
+//        data.setData(generateBubbleData());
 //        data.setData(generateScatterData());
 //        data.setData(generateCandleData());
 
@@ -146,14 +153,13 @@ public class MainActivity extends AppCompatActivity {
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         d.addDataSet(set);
 
-
         return d;
     }
 
     private BarData generateBarData() {
         ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
         for (int index = 0; index < mMonths.length; index++)
-            entries1.add(new BarEntry(index, getRandom(15, 5)));
+            entries1.add(new BarEntryDto(index, getRandom(15, 5),index+2));
 
         BarDataSet set1 = new BarDataSet(entries1, "Bar 1");
 //        set1.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -220,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         for (int index = 0; index < itemcount; index++) {
             float y = getRandom(10, 40);
             float size = getRandom(100, 105);
-            Log.d(TAG,"size:"+size);
+            Log.d(TAG, "size:" + size);
             entries.add(new BubbleEntry(index, y, size));
         }
 
